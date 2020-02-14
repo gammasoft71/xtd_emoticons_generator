@@ -10,6 +10,10 @@ include_directories(${jsoncpp_INCLUDE_DIRS})
 set(SOURCES
   src/xtd_emoticons_generator.cpp
 )
+set(HEADERS
+  src/change_directory_context.hpp
+  src/emoticons_class_generator.hpp
+)
 source_group(src FILES ${SOURCES})
 source_group(include FILES ${HEADERS})
 
@@ -19,5 +23,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Application properties
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} xtd ${jsoncpp_LIBRARIES})
