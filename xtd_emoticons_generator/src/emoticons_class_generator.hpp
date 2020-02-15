@@ -29,6 +29,8 @@ public:
     create_png_images();
     if (convert_images_to_xpm_)
       create_xpm_images();
+    
+    read_emoji_json_file();
   }
 
 private:
@@ -87,6 +89,14 @@ private:
     }
     write_line("  {} xpm image converted", counter);
   }
+  
+  void read_emoji_json_file() {
+    write_line("Read emoji json file...");
+    std::ifstream emoji_json_file {emoji_data_root_path_ / "emoji.json"};
+    Json::CharReaderBuilder builder;
+    JSONCPP_STRING errs;
+    parseFromStream(builder, emoji_json_file, &emoji_json_root_, &errs);
+  }
 
   template<typename ... args_t>
   void write(const std::string& fmt, args_t&& ... args) {
@@ -108,4 +118,5 @@ private:
   bool convert_images_to_xpm_ = false;
   bool verbose_ = false;
   bool regenerate_ = false;
+  Json::Value emoji_json_root_;
 };

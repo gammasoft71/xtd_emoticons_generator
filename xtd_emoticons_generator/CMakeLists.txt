@@ -5,7 +5,7 @@ project(xtd_emoticons_generator VERSION 1.0.0)
 find_package(xtd REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(JSONCPP jsoncpp)
-include_directories(${jsoncpp_INCLUDE_DIRS})
+include_directories(${JSONCPP_INCLUDE_DIRS})
 
 set(SOURCES
   src/xtd_emoticons_generator.cpp
@@ -24,4 +24,4 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Application properties
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} xtd ${jsoncpp_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} xtd ${JSONCPP_LIBRARIES})
