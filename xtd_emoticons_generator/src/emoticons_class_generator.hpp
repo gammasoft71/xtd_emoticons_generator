@@ -31,6 +31,15 @@ public:
       create_xpm_images();
     
     read_emoji_json_file();
+
+    write_line("  [");
+    for (auto emoji : emoji_json_root_) {
+      write_line("    {");
+      write_line("      short_name: \"{}\",", emoji["short_name"].asString());
+      write_line("      unified: {{{}}},", xtd::strings::join(", ", xtd::strings::split(emoji["unified"].asString(), {'-'})));
+      write_line("    ),");
+    }
+    write_line("  ]");
   }
 
 private:
@@ -93,11 +102,17 @@ private:
   void read_emoji_json_file() {
     write_line("Read emoji json file...");
     std::ifstream emoji_json_file {emoji_data_root_path_ / "emoji.json"};
+    std::string errors;
     Json::CharReaderBuilder builder;
-    JSONCPP_STRING errs;
-    parseFromStream(builder, emoji_json_file, &emoji_json_root_, &errs);
+    parseFromStream(builder, emoji_json_file, &emoji_json_root_, &errors);
+    write_line("  errors = {}", errors);
   }
-
+  
+  template<typename arg_t>
+  void write(arg_t&& str) {
+    if (verbose_) xtd::console::write(str);
+  }
+  
   template<typename ... args_t>
   void write(const std::string& fmt, args_t&& ... args) {
     if (verbose_) xtd::console::write(fmt, args...);
@@ -105,6 +120,11 @@ private:
   
   void write_line() {
     if (verbose_) xtd::console::write_line();
+  }
+  
+  template<typename arg_t>
+  void write_line(arg_t&& str) {
+    if (verbose_) xtd::console::write_line(str);
   }
   
   template<typename ... args_t>
