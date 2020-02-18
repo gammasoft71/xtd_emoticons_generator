@@ -32,6 +32,7 @@ public:
     
     read_emoji_json_file();
 
+    /*
     write_line("  [");
     for (auto emoji : emoji_json_root_) {
       write_line("    {");
@@ -40,6 +41,11 @@ public:
       write_line("    ),");
     }
     write_line("  ]");
+     */
+    
+    for (auto emoji : emoji_json_root_) {
+      write_line("const xtd::emoticon xtd::emoticons::{} = {{{}, {{{}}}, {{{}}}, {{{}}}}}", to_variable(emoji["short_name"].asString()), emoji["name"], xtd::strings::join(", ", emoji["short_names"]), xtd::strings::join(", ", emoji["texts"]), xtd::strings::join(", ", xtd::strings::split(emoji["unified"].asString(), {'-'})));
+    }
   }
 
 private:
@@ -106,6 +112,10 @@ private:
     Json::CharReaderBuilder builder;
     parseFromStream(builder, emoji_json_file, &emoji_json_root_, &errors);
     write_line("  errors = {}", errors);
+  }
+  
+  std::string to_variable(const std::string& name) {
+    return xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::replace(xtd::strings::trim(xtd::strings::to_lower(name)), " ", "_"), "(", ""), ")", ""), "'", "_"), "ô", "o"), "é", "e"), "Å", "a"), ",", ""), "ç", "c"), "-", "_"), ".", ""), ":", "");
   }
   
   template<typename arg_t>
